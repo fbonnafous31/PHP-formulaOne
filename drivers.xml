@@ -1,0 +1,156 @@
+<DriverTable season="2022">
+    <Driver driverId="albon" code="ALB" url="http://en.wikipedia.org/wiki/Alexander_Albon">
+        <PermanentNumber>23</PermanentNumber>
+        <GivenName>Alexander</GivenName>
+        <FamilyName>Albon</FamilyName>
+        <DateOfBirth>1996-03-23</DateOfBirth>
+        <Nationality>Thai</Nationality>
+    </Driver>
+    <Driver driverId="alonso" code="ALO" url="http://en.wikipedia.org/wiki/Fernando_Alonso">
+        <PermanentNumber>14</PermanentNumber>
+        <GivenName>Fernando</GivenName>
+        <FamilyName>Alonso</FamilyName>
+        <DateOfBirth>1981-07-29</DateOfBirth>
+        <Nationality>Spanish</Nationality>
+    </Driver>
+    <Driver driverId="bottas" code="BOT" url="http://en.wikipedia.org/wiki/Valtteri_Bottas">
+        <PermanentNumber>77</PermanentNumber>
+        <GivenName>Valtteri</GivenName>
+        <FamilyName>Bottas</FamilyName>
+        <DateOfBirth>1989-08-28</DateOfBirth>
+        <Nationality>Finnish</Nationality>
+    </Driver>
+    <Driver driverId="de_vries" code="DEV" url="http://en.wikipedia.org/wiki/Nyck_de_Vries">
+        <PermanentNumber>45</PermanentNumber>
+        <GivenName>Nyck</GivenName>
+        <FamilyName>de Vries</FamilyName>
+        <DateOfBirth>1995-02-06</DateOfBirth>
+        <Nationality>Dutch</Nationality>
+    </Driver>
+    <Driver driverId="gasly" code="GAS" url="http://en.wikipedia.org/wiki/Pierre_Gasly">
+        <PermanentNumber>10</PermanentNumber>
+        <GivenName>Pierre</GivenName>
+        <FamilyName>Gasly</FamilyName>
+        <DateOfBirth>1996-02-07</DateOfBirth>
+        <Nationality>French</Nationality>
+    </Driver>
+    <Driver driverId="hamilton" code="HAM" url="http://en.wikipedia.org/wiki/Lewis_Hamilton">
+        <PermanentNumber>44</PermanentNumber>
+        <GivenName>Lewis</GivenName>
+        <FamilyName>Hamilton</FamilyName>
+        <DateOfBirth>1985-01-07</DateOfBirth>
+        <Nationality>British</Nationality>
+    </Driver>
+    <Driver driverId="hulkenberg" code="HUL" url="http://en.wikipedia.org/wiki/Nico_H%C3%BClkenberg">
+        <PermanentNumber>27</PermanentNumber>
+        <GivenName>Nico</GivenName>
+        <FamilyName>Hülkenberg</FamilyName>
+        <DateOfBirth>1987-08-19</DateOfBirth>
+        <Nationality>German</Nationality>
+    </Driver>
+    <Driver driverId="latifi" code="LAT" url="http://en.wikipedia.org/wiki/Nicholas_Latifi">
+        <PermanentNumber>6</PermanentNumber>
+        <GivenName>Nicholas</GivenName>
+        <FamilyName>Latifi</FamilyName>
+        <DateOfBirth>1995-06-29</DateOfBirth>
+        <Nationality>Canadian</Nationality>
+    </Driver>
+    <Driver driverId="leclerc" code="LEC" url="http://en.wikipedia.org/wiki/Charles_Leclerc">
+        <PermanentNumber>16</PermanentNumber>
+        <GivenName>Charles</GivenName>
+        <FamilyName>Leclerc</FamilyName>
+        <DateOfBirth>1997-10-16</DateOfBirth>
+        <Nationality>Monegasque</Nationality>
+    </Driver>
+    <Driver driverId="kevin_magnussen" code="MAG" url="http://en.wikipedia.org/wiki/Kevin_Magnussen">
+        <PermanentNumber>20</PermanentNumber>
+        <GivenName>Kevin</GivenName>
+        <FamilyName>Magnussen</FamilyName>
+        <DateOfBirth>1992-10-05</DateOfBirth>
+        <Nationality>Danish</Nationality>
+    </Driver>
+    <Driver driverId="norris" code="NOR" url="http://en.wikipedia.org/wiki/Lando_Norris">
+        <PermanentNumber>4</PermanentNumber>
+        <GivenName>Lando</GivenName>
+        <FamilyName>Norris</FamilyName>
+        <DateOfBirth>1999-11-13</DateOfBirth>
+        <Nationality>British</Nationality>
+    </Driver>
+    <Driver driverId="ocon" code="OCO" url="http://en.wikipedia.org/wiki/Esteban_Ocon">
+        <PermanentNumber>31</PermanentNumber>
+        <GivenName>Esteban</GivenName>
+        <FamilyName>Ocon</FamilyName>
+        <DateOfBirth>1996-09-17</DateOfBirth>
+        <Nationality>French</Nationality>
+    </Driver>
+    <Driver driverId="perez" code="PER" url="http://en.wikipedia.org/wiki/Sergio_P%C3%A9rez">
+        <PermanentNumber>11</PermanentNumber>
+        <GivenName>Sergio</GivenName>
+        <FamilyName>Pérez</FamilyName>
+        <DateOfBirth>1990-01-26</DateOfBirth>
+        <Nationality>Mexican</Nationality>
+    </Driver>
+    <Driver driverId="ricciardo" code="RIC" url="http://en.wikipedia.org/wiki/Daniel_Ricciardo">
+        <PermanentNumber>3</PermanentNumber>
+        <GivenName>Daniel</GivenName>
+        <FamilyName>Ricciardo</FamilyName>
+        <DateOfBirth>1989-07-01</DateOfBirth>
+        <Nationality>Australian</Nationality>
+    </Driver>
+    <Driver driverId="russell" code="RUS" url="http://en.wikipedia.org/wiki/George_Russell_%28racing_driver%29">
+        <PermanentNumber>63</PermanentNumber>
+        <GivenName>George</GivenName>
+        <FamilyName>Russell</FamilyName>
+        <DateOfBirth>1998-02-15</DateOfBirth>
+        <Nationality>British</Nationality>
+    </Driver>
+    <Driver driverId="sainz" code="SAI" url="http://en.wikipedia.org/wiki/Carlos_Sainz_Jr.">
+        <PermanentNumber>55</PermanentNumber>
+        <GivenName>Carlos</GivenName>
+        <FamilyName>Sainz</FamilyName>
+        <DateOfBirth>1994-09-01</DateOfBirth>
+        <Nationality>Spanish</Nationality>
+    </Driver>
+    <Driver driverId="mick_schumacher" code="MSC" url="http://en.wikipedia.org/wiki/Mick_Schumacher">
+        <PermanentNumber>47</PermanentNumber>
+        <GivenName>Mick</GivenName>
+        <FamilyName>Schumacher</FamilyName>
+        <DateOfBirth>1999-03-22</DateOfBirth>
+        <Nationality>German</Nationality>
+    </Driver>
+    <Driver driverId="stroll" code="STR" url="http://en.wikipedia.org/wiki/Lance_Stroll">
+        <PermanentNumber>18</PermanentNumber>
+        <GivenName>Lance</GivenName>
+        <FamilyName>Stroll</FamilyName>
+        <DateOfBirth>1998-10-29</DateOfBirth>
+        <Nationality>Canadian</Nationality>
+    </Driver>
+    <Driver driverId="tsunoda" code="TSU" url="http://en.wikipedia.org/wiki/Yuki_Tsunoda">
+        <PermanentNumber>22</PermanentNumber>
+        <GivenName>Yuki</GivenName>
+        <FamilyName>Tsunoda</FamilyName>
+        <DateOfBirth>2000-05-11</DateOfBirth>
+        <Nationality>Japanese</Nationality>
+    </Driver>
+    <Driver driverId="max_verstappen" code="VER" url="http://en.wikipedia.org/wiki/Max_Verstappen">
+        <PermanentNumber>33</PermanentNumber>
+        <GivenName>Max</GivenName>
+        <FamilyName>Verstappen</FamilyName>
+        <DateOfBirth>1997-09-30</DateOfBirth>
+        <Nationality>Dutch</Nationality>
+    </Driver>
+    <Driver driverId="vettel" code="VET" url="http://en.wikipedia.org/wiki/Sebastian_Vettel">
+        <PermanentNumber>5</PermanentNumber>
+        <GivenName>Sebastian</GivenName>
+        <FamilyName>Vettel</FamilyName>
+        <DateOfBirth>1987-07-03</DateOfBirth>
+        <Nationality>German</Nationality>
+    </Driver>
+    <Driver driverId="zhou" code="ZHO" url="http://en.wikipedia.org/wiki/Guanyu_Zhou">
+        <PermanentNumber>24</PermanentNumber>
+        <GivenName>Guanyu</GivenName>
+        <FamilyName>Zhou</FamilyName>
+        <DateOfBirth>1999-05-30</DateOfBirth>
+        <Nationality>Chinese</Nationality>
+    </Driver>
+</DriverTable>
