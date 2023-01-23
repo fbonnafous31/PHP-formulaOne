@@ -1,0 +1,15 @@
+{
+    "name": "bonnafous/formule1",
+    "autoload": {
+        "psr-4": {
+            "Bonnafous\\Formule1\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "François Bonnafous",
+            "email": "francois.bonnafous@hotmail.fr"
+        }
+    ],
+    "require": {}
+}
