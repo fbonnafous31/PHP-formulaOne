@@ -6,56 +6,54 @@ use App\Utils\Logger;
 
 class DriverController
 {
-    private $columns;
+    private $attributes;
+    private $values;
+    private $sql_insert;
 
-    function create_table($xml)
+    public function create_table($xml)
     {
-        $this->columns = '';
-        $attributes = '';
-
         $sql_create = 'CREATE TABLE driver (season INT, ';
         foreach ($xml->DriverTable as $drivers) {
             foreach ($drivers as $driver) {
 
                 foreach ($driver->attributes() as $attribute => $value) {
                     $sql_create .= $attribute . ' VARCHAR(255), ';
-                    $this->columns .= $attribute . ', ';
                 }
 
-                $attributes = substr($attributes, 0, -2);
-                foreach ($driver as $key => $value) {
-                    $sql_create .= $key . ' VARCHAR(255), ';
-                    $this->columns .= $key . ', ';
+                foreach ($driver as $attribute => $value) {
+                    $sql_create .= $attribute . ' VARCHAR(255), ';
                 }
                 break 1;
             }
         }
         $sql_create = substr($sql_create, 0, -2) .  ');';
-        $this->columns = substr($this->columns, 0, -2);
         Logger::log($sql_create, false);
     }
 
-    function insert_table($xml, $season)
+    public function insert_table($xml, $season)
     {
+        $this->init_parameters();
+
         foreach ($xml->DriverTable as $drivers) {
             foreach ($drivers as $driver) {
 
-                $sql_insert = 'INSERT into driver (season, ' . $this->columns . ') VALUES (' . $season . ',';
                 foreach ($driver->attributes() as $attribute => $value) {
-                    $sql_insert .= '\'' . $value . '\'' . ', ';
+                    $this->attributes  .= $attribute . ', ';
+                    $this->values .= '\'' . addslashes($value) . '\'' . ', ';
                 }
 
-                foreach ($driver as $key => $value) {
-                    $sql_insert .= '\'' . $value . '\'' . ', ';
+                foreach ($driver as $attribute => $value) {
+                    $this->attributes  .= $attribute . ', ';
+                    $this->values .= '\'' . addslashes($value) . '\'' . ', ';
                 }
-                $sql_insert = substr($sql_insert, 0, -2) .  ');';
+                $sql_insert = 'INSERT into driver (season, ' . substr($this->attributes, 0, -2) . ') VALUES (' . $season . ', ' . substr($this->values, 0, -2) . ');';
                 Logger::log($sql_insert, false);
-                $sql_insert = '';
+                $this->init_parameters();
             }
         }
     }
 
-    function read_drivers($xml)
+    public function read_drivers($xml)
     {
         foreach ($xml->DriverTable as $drivers) {
             foreach ($drivers as $driver) {
@@ -69,5 +67,12 @@ class DriverController
                 echo "<br><br>";
             }
         }
+    }
+
+    private function init_parameters()
+    {
+        $this->attributes = '';
+        $this->values = '';
+        $this->sql_insert = '';
     }
 }

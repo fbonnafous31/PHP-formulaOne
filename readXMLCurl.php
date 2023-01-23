@@ -11,10 +11,11 @@ curl_setopt($curl, CURLOPT_URL, $url);
 $data = curl_exec($curl);
 curl_close($curl);
 $xml = simplexml_load_string($data);
+
 $driver = new DriverController();
 $driver->create_table($xml);
 
-$season = 2018;
+$season = 1950;
 while ($season < 2023) {
     $url = "http://ergast.com/api/f1/" . $season . "/drivers";
 
