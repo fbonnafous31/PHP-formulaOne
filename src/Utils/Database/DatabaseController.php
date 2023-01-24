@@ -36,11 +36,16 @@ class DatabaseController
         return $result;
     }
 
-    public function prepare($statement, $attributes, $classname)
+    public function query_attr($statement, $attributes, $classname)
     {
         $query = $this->getPDO()->prepare($statement);
         $query->execute($attributes);
         $result = $query->fetchAll(PDO::FETCH_CLASS, $classname);
         return $result;
+    }
+
+    public function execute($statement)
+    {
+        return $this->getPDO()->exec($statement);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Utils\Database\GetDatabase;
 use App\Utils\Logger\Logger;
 
 class DriverController
@@ -9,6 +10,13 @@ class DriverController
     private $attributes;
     private $values;
     private $sql_insert;
+
+    protected $db;
+
+    public function __construct()
+    {
+        $this->db = GetDatabase::getDatabase();
+    }
 
     public function create_table($xml)
     {
@@ -27,6 +35,10 @@ class DriverController
             }
         }
         $sql_create = substr($sql_create, 0, -2) .  ');';
+
+        $this->db->execute("DROP TABLE IF EXISTS driver ");
+        $this->db->execute($sql_create);
+
         Logger::log($sql_create, false);
     }
 
@@ -47,6 +59,9 @@ class DriverController
                     $this->values .= '\'' . addslashes($value) . '\'' . ', ';
                 }
                 $this->sql_insert = 'INSERT into driver (season, ' . substr($this->attributes, 0, -2) . ') VALUES (' . $season . ', ' . substr($this->values, 0, -2) . ');';
+
+                $this->db->execute($this->sql_insert);
+
                 Logger::log($this->sql_insert, false);
                 $this->init_parameters();
             }
