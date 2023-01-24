@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Utils\Logger;
+use App\Utils\Logger\Logger;
 
 class DriverController
 {
@@ -46,14 +46,14 @@ class DriverController
                     $this->attributes  .= $attribute . ', ';
                     $this->values .= '\'' . addslashes($value) . '\'' . ', ';
                 }
-                $sql_insert = 'INSERT into driver (season, ' . substr($this->attributes, 0, -2) . ') VALUES (' . $season . ', ' . substr($this->values, 0, -2) . ');';
-                Logger::log($sql_insert, false);
+                $this->sql_insert = 'INSERT into driver (season, ' . substr($this->attributes, 0, -2) . ') VALUES (' . $season . ', ' . substr($this->values, 0, -2) . ');';
+                Logger::log($this->sql_insert, false);
                 $this->init_parameters();
             }
         }
     }
 
-    public function read_drivers($xml)
+    public function read_api_drivers($xml)
     {
         foreach ($xml->DriverTable as $drivers) {
             foreach ($drivers as $driver) {

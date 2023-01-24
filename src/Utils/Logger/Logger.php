@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace App\Utils\Logger;
 
 class Logger
 {
@@ -10,7 +10,7 @@ class Logger
         else $log = $log . "\n";
 
         $filename = date('Ymd');
-        $file = __DIR__ . '/../../logs/' . $filename . '.txt';
+        $file = __DIR__ . '/../../../logs/' . $filename . '.txt';
         fopen($file, 'a');
         file_put_contents($file, $log, FILE_APPEND);
     }
