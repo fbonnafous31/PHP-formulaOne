@@ -20,19 +20,21 @@ class DriverController
 
     public function create_table($xml)
     {
-        $sql_create = 'CREATE TABLE driver (season INT, ';
-        foreach ($xml->DriverTable as $drivers) {
-            foreach ($drivers as $driver) {
+        $sql_create = 'CREATE TABLE driver (';
 
-                foreach ($driver->attributes() as $attribute => $value) {
-                    $sql_create .= $attribute . ' VARCHAR(255), ';
-                }
+        foreach ($xml->DriverTable->attributes() as $attribute => $value) {
+            $sql_create .= $attribute . ' VARCHAR(255), ';
+        }
 
-                foreach ($driver as $attribute => $value) {
-                    $sql_create .= $attribute . ' VARCHAR(255), ';
-                }
-                break 1;
+        foreach ($xml->DriverTable->Driver as $driver) {
+            foreach ($driver->attributes() as $attribute => $value) {
+                $sql_create .= $attribute . ' VARCHAR(255), ';
             }
+
+            foreach ($driver as $attribute => $value) {
+                $sql_create .= $attribute . ' VARCHAR(255), ';
+            }
+            break 1;
         }
         $sql_create = substr($sql_create, 0, -2) .  ');';
 
@@ -46,8 +48,13 @@ class DriverController
     {
         $this->init_parameters();
 
-        foreach ($xml->DriverTable as $drivers) {
+        foreach ($xml->DriverTable as $attr => $drivers) {
             foreach ($drivers as $driver) {
+
+                foreach ($drivers->attributes() as $attribute => $value) {
+                    $this->attributes  .= $attribute . ', ';
+                    $this->values .= '\'' . addslashes($value) . '\'' . ', ';
+                }
 
                 foreach ($driver->attributes() as $attribute => $value) {
                     $this->attributes  .= $attribute . ', ';
@@ -58,7 +65,7 @@ class DriverController
                     $this->attributes  .= $attribute . ', ';
                     $this->values .= '\'' . addslashes($value) . '\'' . ', ';
                 }
-                $this->sql_insert = 'INSERT into driver (season, ' . substr($this->attributes, 0, -2) . ') VALUES (' . $season . ', ' . substr($this->values, 0, -2) . ');';
+                $this->sql_insert = 'INSERT into driver (' . substr($this->attributes, 0, -2) . ') VALUES (' . substr($this->values, 0, -2) . ');';
 
                 $this->db->execute($this->sql_insert);
 

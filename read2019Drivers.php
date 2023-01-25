@@ -1,12 +1,14 @@
 <?php
-$file = __DIR__ . '/ressources/xml/2022_Drivers.xml';
+$file = __DIR__ . '/ressources/xml/2019_Drivers.xml';
 if (file_exists($file)) {
     $content = simplexml_load_file($file);
 
-    echo "Saison "  . $content->attributes()->season . "<br><br>";
+    echo "Série "  . $content->attributes()->series . " - " .  $content->attributes()->url . "<br><br>";
+
+    echo "Saison "  . $content->DriverTable->attributes()->season . "<br><br>";
 
     echo "<table>";
-    foreach ($content->Driver as $driver) {
+    foreach ($content->DriverTable->Driver as $driver) {
         echo "<tr>";
         echo "<td>" . $driver->attributes()->driverId . "</td>";
         echo "<td>" . $driver->attributes()->code . "</td>";
