@@ -44,7 +44,7 @@ class DatabaseController
         return $result;
     }
 
-    public function execute($statement)
+    public function execute_query($statement)
     {
         return $this->getPDO()->exec($statement);
     }

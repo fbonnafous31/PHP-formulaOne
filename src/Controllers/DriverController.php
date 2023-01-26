@@ -38,63 +38,50 @@ class DriverController
         }
         $sql_create = substr($sql_create, 0, -2) .  ');';
 
-        $this->db->execute("DROP TABLE IF EXISTS driver ");
-        $this->db->execute($sql_create);
+        $this->db->execute_query("DROP TABLE IF EXISTS driver ");
+        $this->db->execute_query($sql_create);
 
         Logger::log($sql_create, false);
     }
 
     public function insert_table($xml, $season)
     {
-        $this->init_parameters();
+        $this->init_query();
 
         foreach ($xml->DriverTable as $attr => $drivers) {
             foreach ($drivers as $driver) {
 
                 foreach ($drivers->attributes() as $attribute => $value) {
-                    $this->attributes  .= $attribute . ', ';
-                    $this->values .= '\'' . addslashes($value) . '\'' . ', ';
+                    $this->build_query($attribute, $value);
                 }
 
                 foreach ($driver->attributes() as $attribute => $value) {
-                    $this->attributes  .= $attribute . ', ';
-                    $this->values .= '\'' . addslashes($value) . '\'' . ', ';
+                    $this->build_query($attribute, $value);
                 }
 
                 foreach ($driver as $attribute => $value) {
-                    $this->attributes  .= $attribute . ', ';
-                    $this->values .= '\'' . addslashes($value) . '\'' . ', ';
+                    $this->build_query($attribute, $value);
                 }
                 $this->sql_insert = 'INSERT into driver (' . substr($this->attributes, 0, -2) . ') VALUES (' . substr($this->values, 0, -2) . ');';
 
-                $this->db->execute($this->sql_insert);
+                $this->db->execute_query($this->sql_insert);
 
                 Logger::log($this->sql_insert, false);
-                $this->init_parameters();
+                $this->init_query();
             }
         }
     }
 
-    public function read_api_drivers($xml)
-    {
-        foreach ($xml->DriverTable as $drivers) {
-            foreach ($drivers as $driver) {
-                foreach ($driver->attributes() as $attribute => $value) {
-                    echo $attribute, ' : ', $value, "<br>";
-                }
-
-                foreach ($driver as $key => $value) {
-                    echo $key . " : " . $value . "<br>";
-                }
-                echo "<br><br>";
-            }
-        }
-    }
-
-    private function init_parameters()
+    private function init_query()
     {
         $this->attributes = '';
         $this->values = '';
         $this->sql_insert = '';
+    }
+
+    private function build_query($attribute, $value)
+    {
+        $this->attributes  .= $attribute . ', ';
+        $this->values .= '\'' . addslashes($value) . '\'' . ', ';
     }
 }
