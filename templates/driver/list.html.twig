@@ -5,5 +5,15 @@
 {% endblock %}
 
 {% block body %}
-	Liste des pilotes
+	<table class="table">
+		{% for driver in drivers %}
+			<tr>
+				<td>{{ driver.GivenName }}</td>
+				<td>{{ driver.FamilyName }}</td>
+				<td>{{ driver.DateOfBirth }}</td>
+				<td>{{ driver.Nationality }}</td>
+				<td>{{ driver.url }}</td>
+			</tr>
+		{% endfor %}
+	</table>
 {% endblock %}
