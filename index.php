@@ -1,6 +1,6 @@
 <?php
 
-use App\Utils\Database\GetDatabase;
+use App\Repository\DriverRepository;
 
 include 'vendor/autoload.php';
 
@@ -10,9 +10,9 @@ $loader = new \Twig\Loader\FilesystemLoader('./templates');
 
 $twig = new \Twig\Environment($loader);
 
-$db = GetDatabase::getDatabase();
+$repository = new DriverRepository;
 
-$drivers_list = $db->query("SELECT * FROM driver WHERE season = 2022");
+$drivers_list = $repository->list_drivers(2020, 2021);
 
 echo $twig->render('driver/list.html.twig', [
     'drivers' => $drivers_list

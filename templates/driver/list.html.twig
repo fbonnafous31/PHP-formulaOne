@@ -5,15 +5,30 @@
 {% endblock %}
 
 {% block body %}
-	<table class="table">
+<table class="table table-hover">
+	<thead class="table-dark">
+		<tr>
+			<th scope="col">Saison</th>
+			<th scope="col">Prénom</th>
+			<th scope="col">Nom</th>
+			<th scope="col">Date de naissance</th>
+			<th scope="col">Nationalité</th>
+			<th scope="col">Fiche wikipédia</th>
+		</tr>
+	</thead>
+	<tbody>
 		{% for driver in drivers %}
 			<tr>
+				<td>{{ driver.season }}</td>
 				<td>{{ driver.GivenName }}</td>
 				<td>{{ driver.FamilyName }}</td>
-				<td>{{ driver.DateOfBirth }}</td>
+				<td>{{ driver.DateOfBirth |date("d/m/Y") }}</td>
 				<td>{{ driver.Nationality }}</td>
-				<td>{{ driver.url }}</td>
+				<td>
+					<a href="{{ driver.url }}">{{ driver.url }}
+					</a>
+				</td>
 			</tr>
-		{% endfor %}
-	</table>
-{% endblock %}
+		</td>
+	</tbody>
+</tr>{% endfor %}</tbody></table>{% endblock %}
