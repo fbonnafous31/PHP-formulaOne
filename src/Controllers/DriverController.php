@@ -2,8 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Utils\Database\GetDatabase;
 use App\Utils\Logger\Logger;
+use App\Utils\Database\GetDatabase;
+use App\Repository\DriverRepository;
 
 class DriverController
 {
@@ -12,16 +13,49 @@ class DriverController
     private $sql_insert;
 
     protected $db;
+    protected $logger;
+    protected $query;
 
     public function __construct()
     {
-        $this->db = GetDatabase::getDatabase();
+        $this->db     = GetDatabase::getDatabase();
+        $this->logger = new Logger;
+        $this->query  = new DriverRepository;
     }
 
-    public function create_table($xml)
+    public function import($minSeason = 1950, $maxSeason = 2023)
+    {
+        $url = "http://ergast.com/api/f1/2022/drivers";
+        $xml = $this->extract_xml($url);
+
+        $this->create_table($xml);
+
+        $currentSeason = $minSeason;
+        while ($currentSeason <= $maxSeason) {
+            $url = "http://ergast.com/api/f1/" . $currentSeason . "/drivers";
+            $xml = $this->extract_xml($url);
+            $currentSeason++;
+
+            $this->insert_data($xml);
+        }
+    }
+
+    public function show($minSeason = 1950, $maxSeason = 2023)
+    {
+        $loader = new \Twig\Loader\FilesystemLoader('./templates');
+
+        $twig = new \Twig\Environment($loader);
+
+        $drivers_list = $this->query->list_drivers($minSeason, $maxSeason);
+
+        return $twig->render('driver/list.html.twig', [
+            'drivers' => $drivers_list
+        ]);
+    }
+
+    private function create_table($xml)
     {
         $sql_create = 'CREATE TABLE driver (';
-
         foreach ($xml->DriverTable->attributes() as $attribute => $value) {
             $sql_create .= $attribute . ' VARCHAR(255), ';
         }
@@ -41,10 +75,10 @@ class DriverController
         $this->db->execute_query("DROP TABLE IF EXISTS driver ");
         $this->db->execute_query($sql_create);
 
-        Logger::log($sql_create, false);
+        $this->logger->log($sql_create, false);
     }
 
-    public function insert_table($xml, $season)
+    private function insert_data($xml, $season = 2022)
     {
         $this->init_query();
 
@@ -66,10 +100,22 @@ class DriverController
 
                 $this->db->execute_query($this->sql_insert);
 
-                Logger::log($this->sql_insert, false);
+                $this->logger->log($this->sql_insert, false);
                 $this->init_query();
             }
         }
+    }
+
+    private function extract_xml($url)
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $data = curl_exec($curl);
+        curl_close($curl);
+        $xml = simplexml_load_string($data);
+
+        return $xml;
     }
 
     private function init_query()

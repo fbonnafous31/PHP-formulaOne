@@ -1,19 +1,11 @@
 <?php
 
-use App\Repository\DriverRepository;
+use App\Controllers\DriverController;
 
 include 'vendor/autoload.php';
 
 require_once('libraries/autoload.php');
 
-$loader = new \Twig\Loader\FilesystemLoader('./templates');
+$driver = new DriverController;
 
-$twig = new \Twig\Environment($loader);
-
-$repository = new DriverRepository;
-
-$drivers_list = $repository->list_drivers(2020, 2021);
-
-echo $twig->render('driver/list.html.twig', [
-    'drivers' => $drivers_list
-]);
+echo $driver->show(2022);
