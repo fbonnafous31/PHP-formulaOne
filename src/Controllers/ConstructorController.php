@@ -4,24 +4,18 @@ namespace App\Controllers;
 
 use App\Utils\Logger\Logger;
 use App\Utils\Database\GetDatabase;
-use App\Repository\DriverRepository;
+use App\Utils\Controller\QueryBuilder;
+use App\Utils\Curl\CurlController;
 
 class ConstructorController
 {
-
-    private $attributes;
-    private $values;
-    private $sql_insert;
-
     protected $db;
     protected $logger;
-    protected $query;
 
     public function __construct()
     {
         $this->db     = GetDatabase::getDatabase();
         $this->logger = new Logger;
-        $this->query  = new DriverRepository;
     }
 
     public function import($minSeason = 1950, $maxSeason = 2022)
@@ -29,9 +23,11 @@ class ConstructorController
         $currentSeason = $maxSeason;
         while ($currentSeason >= $minSeason) {
             $url = "http://ergast.com/api/f1/" . $currentSeason . "/constructors";
-            $xml = $this->extract_xml($url);
+
+            $xml = CurlController::extract_xml($url);
 
             if ($currentSeason == $maxSeason) $this->create_table($xml);
+
             $this->insert_data($xml);
 
             $currentSeason--;
@@ -63,56 +59,34 @@ class ConstructorController
         $this->logger->log($sql_create, false);
     }
 
-    private function insert_data($xml, $season = 2022)
+    private function insert_data($xml)
     {
-        $this->init_query();
+        $builder = new QueryBuilder;
 
         foreach ($xml->ConstructorTable as $attr => $constructors) {
             foreach ($constructors as $constructor) {
+                $attributes = '';
+                $values = '';
 
                 foreach ($constructors->attributes() as $attribute => $value) {
-                    $this->build_query($attribute, $value);
+                    $attributes .= $builder->build_attributes($attribute);
+                    $values .= $builder->build_values($value);
                 }
 
                 foreach ($constructor->attributes() as $attribute => $value) {
-                    $this->build_query($attribute, $value);
+                    $attributes .= $builder->build_attributes($attribute);
+                    $values .= $builder->build_values($value);
                 }
 
                 foreach ($constructor as $attribute => $value) {
-                    $this->build_query($attribute, $value);
+                    $attributes .= $builder->build_attributes($attribute);
+                    $values .= $builder->build_values($value);
                 }
-                $this->sql_insert = 'INSERT into constructor (' . substr($this->attributes, 0, -2) . ') VALUES (' . substr($this->values, 0, -2) . ');';
+                $query = 'INSERT into constructor (' . substr($attributes, 0, -2) . ') VALUES (' . substr($values, 0, -2) . ');';
+                $this->logger->log($query, false);
 
-                $this->db->execute_query($this->sql_insert);
-
-                $this->logger->log($this->sql_insert, false);
-                $this->init_query();
+                $this->db->execute_query($query);
             }
         }
-    }
-
-    private function extract_xml($url)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $data = curl_exec($curl);
-        curl_close($curl);
-        $xml = simplexml_load_string($data);
-
-        return $xml;
-    }
-
-    private function init_query()
-    {
-        $this->attributes = '';
-        $this->values = '';
-        $this->sql_insert = '';
-    }
-
-    private function build_query($attribute, $value)
-    {
-        $this->attributes  .= $attribute . ', ';
-        $this->values .= '\'' . addslashes($value) . '\'' . ', ';
     }
 }
