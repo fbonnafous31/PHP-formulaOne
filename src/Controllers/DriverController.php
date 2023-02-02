@@ -23,20 +23,18 @@ class DriverController
         $this->query  = new DriverRepository;
     }
 
-    public function import($minSeason = 1950, $maxSeason = 2023)
+    public function import($minSeason = 1950, $maxSeason = 2022)
     {
-        $url = "http://ergast.com/api/f1/2022/drivers";
-        $xml = $this->extract_xml($url);
-
-        $this->create_table($xml);
-
-        $currentSeason = $minSeason;
-        while ($currentSeason <= $maxSeason) {
+        // Boucle sur les saisons décroissantes pour avoir la structure de DB la plus complète pour la table des pilotes
+        $currentSeason = $maxSeason;
+        while ($currentSeason >= $minSeason) {
             $url = "http://ergast.com/api/f1/" . $currentSeason . "/drivers";
             $xml = $this->extract_xml($url);
-            $currentSeason++;
 
+            if ($currentSeason == $maxSeason) $this->create_table($xml);
             $this->insert_data($xml);
+
+            $currentSeason--;
         }
     }
 

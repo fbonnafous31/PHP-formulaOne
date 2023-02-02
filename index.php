@@ -8,4 +8,4 @@ require_once('libraries/autoload.php');
 
 $driver = new DriverController;
 
-echo $driver->show(2022);
+echo $driver->show(2020, 2021);
