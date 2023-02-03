@@ -4,12 +4,12 @@ namespace App\Utils\Controller;
 
 class QueryBuilder
 {
-    public function build_attributes($attribute)
+    public static function build_attributes_list($attribute)
     {
         return $attribute . ', ';
     }
 
-    public function build_values($value)
+    public static function build_values_list($value)
     {
         return '\'' . addslashes($value) . '\'' . ', ';
     }

@@ -3,15 +3,13 @@
 namespace App\Controllers;
 
 use App\Utils\Logger\Logger;
+use App\Utils\Curl\CurlController;
 use App\Utils\Database\GetDatabase;
 use App\Repository\DriverRepository;
+use App\Utils\Controller\QueryBuilder;
 
 class DriverController
 {
-    private $attributes;
-    private $values;
-    private $sql_insert;
-
     protected $db;
     protected $logger;
     protected $query;
@@ -29,9 +27,11 @@ class DriverController
         $currentSeason = $maxSeason;
         while ($currentSeason >= $minSeason) {
             $url = "http://ergast.com/api/f1/" . $currentSeason . "/drivers";
-            $xml = $this->extract_xml($url);
+
+            $xml = CurlController::extract_xml($url);
 
             if ($currentSeason == $maxSeason) $this->create_table($xml);
+
             $this->insert_data($xml);
 
             $currentSeason--;
@@ -78,54 +78,31 @@ class DriverController
 
     private function insert_data($xml, $season = 2022)
     {
-        $this->init_query();
-
         foreach ($xml->DriverTable as $attr => $drivers) {
             foreach ($drivers as $driver) {
+                $attributes = '';
+                $values = '';
 
                 foreach ($drivers->attributes() as $attribute => $value) {
-                    $this->build_query($attribute, $value);
+                    $attributes .= QueryBuilder::build_attributes_list($attribute);
+                    $values     .= QueryBuilder::build_values_list($value);
                 }
 
                 foreach ($driver->attributes() as $attribute => $value) {
-                    $this->build_query($attribute, $value);
+                    $attributes .= QueryBuilder::build_attributes_list($attribute);
+                    $values     .= QueryBuilder::build_values_list($value);
                 }
 
                 foreach ($driver as $attribute => $value) {
-                    $this->build_query($attribute, $value);
+                    $attributes .= QueryBuilder::build_attributes_list($attribute);
+                    $values     .= QueryBuilder::build_values_list($value);
                 }
-                $this->sql_insert = 'INSERT into driver (' . substr($this->attributes, 0, -2) . ') VALUES (' . substr($this->values, 0, -2) . ');';
+                $query = 'INSERT into driver (' . substr($attributes, 0, -2) . ') VALUES (' . substr($values, 0, -2) . ');';
 
-                $this->db->execute_query($this->sql_insert);
+                $this->db->execute_query($query);
 
-                $this->logger->log($this->sql_insert, false);
-                $this->init_query();
+                $this->logger->log($query, false);
             }
         }
-    }
-
-    private function extract_xml($url)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $data = curl_exec($curl);
-        curl_close($curl);
-        $xml = simplexml_load_string($data);
-
-        return $xml;
-    }
-
-    private function init_query()
-    {
-        $this->attributes = '';
-        $this->values = '';
-        $this->sql_insert = '';
-    }
-
-    private function build_query($attribute, $value)
-    {
-        $this->attributes  .= $attribute . ', ';
-        $this->values .= '\'' . addslashes($value) . '\'' . ', ';
     }
 }

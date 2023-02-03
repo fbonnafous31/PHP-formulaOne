@@ -9,7 +9,9 @@ require_once('libraries/autoload.php');
 
 $driver = new DriverController;
 
-// echo $driver->show(2020, 2021);
+// $driver->import();
+
+// echo $driver->show(2020, 2022);
 
 $results = new ConstructorController;
 
