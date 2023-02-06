@@ -30,7 +30,7 @@ class DriverController
 
             $xml = CurlController::extract_xml($url);
 
-            if ($currentSeason == $maxSeason) $this->create_table($xml);
+            if ($currentSeason == $maxSeason) $this->create_table($xml, 'driver');
 
             $this->insert_data($xml);
 
@@ -51,32 +51,32 @@ class DriverController
         ]);
     }
 
-    private function create_table($xml)
+    private function create_table($xml, $tableName)
     {
-        $sql_create = 'CREATE TABLE driver (';
+        $query = 'CREATE TABLE ' . $tableName . ' (';
         foreach ($xml->DriverTable->attributes() as $attribute => $value) {
-            $sql_create .= $attribute . ' VARCHAR(255), ';
+            $query .= QueryBuilder::build_attributes_columnlist($attribute);
         }
 
         foreach ($xml->DriverTable->Driver as $driver) {
             foreach ($driver->attributes() as $attribute => $value) {
-                $sql_create .= $attribute . ' VARCHAR(255), ';
+                $query .= QueryBuilder::build_attributes_columnlist($attribute);
             }
 
             foreach ($driver as $attribute => $value) {
-                $sql_create .= $attribute . ' VARCHAR(255), ';
+                $query .= QueryBuilder::build_attributes_columnlist($attribute);
             }
             break 1;
         }
-        $sql_create = substr($sql_create, 0, -2) .  ');';
+        $sql_create = substr($query, 0, -2) .  ');';
 
-        $this->db->execute_query("DROP TABLE IF EXISTS driver ");
+        $this->db->execute_query("DROP TABLE IF EXISTS " . $tableName);
         $this->db->execute_query($sql_create);
 
         $this->logger->log($sql_create, false);
     }
 
-    private function insert_data($xml, $season = 2022)
+    private function insert_data($xml)
     {
         foreach ($xml->DriverTable as $attr => $drivers) {
             foreach ($drivers as $driver) {
@@ -84,18 +84,18 @@ class DriverController
                 $values = '';
 
                 foreach ($drivers->attributes() as $attribute => $value) {
-                    $attributes .= QueryBuilder::build_attributes_list($attribute);
-                    $values     .= QueryBuilder::build_values_list($value);
+                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                    $values     .= QueryBuilder::build_values_datalist($value);
                 }
 
                 foreach ($driver->attributes() as $attribute => $value) {
-                    $attributes .= QueryBuilder::build_attributes_list($attribute);
-                    $values     .= QueryBuilder::build_values_list($value);
+                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                    $values     .= QueryBuilder::build_values_datalist($value);
                 }
 
                 foreach ($driver as $attribute => $value) {
-                    $attributes .= QueryBuilder::build_attributes_list($attribute);
-                    $values     .= QueryBuilder::build_values_list($value);
+                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                    $values     .= QueryBuilder::build_values_datalist($value);
                 }
                 $query = 'INSERT into driver (' . substr($attributes, 0, -2) . ') VALUES (' . substr($values, 0, -2) . ');';
 

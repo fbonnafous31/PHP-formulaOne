@@ -36,27 +36,27 @@ class ConstructorController
 
     private function create_table($xml, $tableName)
     {
-        $sql_create = 'CREATE TABLE ' . $tableName . ' (';
+        $query = 'CREATE TABLE ' . $tableName . ' (';
         foreach ($xml->ConstructorTable->attributes() as $attribute => $value) {
-            $sql_create .= $attribute . ' VARCHAR(255), ';
+            $query .= QueryBuilder::build_attributes_columnlist($attribute);
         }
 
         foreach ($xml->ConstructorTable->Constructor as $constructor) {
             foreach ($constructor->attributes() as $attribute => $value) {
-                $sql_create .= $attribute . ' VARCHAR(255), ';
+                $query .= QueryBuilder::build_attributes_columnlist($attribute);
             }
 
             foreach ($constructor as $attribute => $value) {
-                $sql_create .= $attribute . ' VARCHAR(255), ';
+                $query .= QueryBuilder::build_attributes_columnlist($attribute);
             }
             break 1;
         }
-        $sql_create = substr($sql_create, 0, -2) .  ');';
+        $query = substr($query, 0, -2) .  ');';
 
         $this->db->execute_query("DROP TABLE IF EXISTS " . $tableName);
-        $this->db->execute_query($sql_create);
+        $this->db->execute_query($query);
 
-        $this->logger->log($sql_create, false);
+        $this->logger->log($query, false);
     }
 
     private function insert_data($xml)
@@ -67,18 +67,18 @@ class ConstructorController
                 $values = '';
 
                 foreach ($constructors->attributes() as $attribute => $value) {
-                    $attributes .= QueryBuilder::build_attributes_list($attribute);
-                    $values     .= QueryBuilder::build_values_list($value);
+                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                    $values     .= QueryBuilder::build_values_datalist($value);
                 }
 
                 foreach ($constructor->attributes() as $attribute => $value) {
-                    $attributes .= QueryBuilder::build_attributes_list($attribute);
-                    $values     .= QueryBuilder::build_values_list($value);
+                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                    $values     .= QueryBuilder::build_values_datalist($value);
                 }
 
                 foreach ($constructor as $attribute => $value) {
-                    $attributes .= QueryBuilder::build_attributes_list($attribute);
-                    $values     .= QueryBuilder::build_values_list($value);
+                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                    $values     .= QueryBuilder::build_values_datalist($value);
                 }
                 $query = 'INSERT into constructor (' . substr($attributes, 0, -2) . ') VALUES (' . substr($values, 0, -2) . ');';
                 $this->logger->log($query, false);
