@@ -31,7 +31,7 @@ class ResultController
 
             if ($currentSeason == $maxSeason) $this->create_table($xml, 'result');
 
-            // $this->insert_data($xml);
+            $this->insert_data($xml);
 
             $currentSeason--;
         }
@@ -60,23 +60,6 @@ class ResultController
                     $query .= QueryBuilder::build_attributes_columnlist($attribute);
                 }
             }
-
-            foreach ($circuit as $attribute => $value) {
-                if (in_array($attribute, array('Location')) == false) {
-                    $query .= QueryBuilder::build_attributes_columnlist($attribute);
-                }
-            }
-            foreach ($xml->RaceTable->Race->Circuit->Location as $location) {
-                foreach ($location->attributes() as $attribute => $value) {
-                    $query .= QueryBuilder::build_attributes_columnlist($attribute);
-                }
-
-                foreach ($location as $attribute => $value) {
-                    $query .= QueryBuilder::build_attributes_columnlist($attribute);
-                }
-                break 1;
-            }
-            break 1;
         }
 
         foreach ($race->ResultsList->Result as $result) {
@@ -123,53 +106,97 @@ class ResultController
 
         $query = substr($query, 0, -2) .  ');';
 
-        // $this->db->execute_query("DROP TABLE IF EXISTS " . $tableName);
-        // $this->db->execute_query($query);
+        $this->db->execute_query("DROP TABLE IF EXISTS " . $tableName);
+        $this->db->execute_query($query);
 
         $this->logger->log($query, false);
     }
 
     private function insert_data($xml)
     {
-        foreach ($xml->CircuitTable as $attr => $circuits) {
-            foreach ($circuits as $circuit) {
+        foreach ($xml->RaceTable->Race as $attr => $race) {
+            $attributes = '';
+            $values = '';
+            foreach ($race->attributes() as $attribute => $value) {
+                $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                $values     .= QueryBuilder::build_values_datalist($value);
+            }
+
+            foreach ($race as $attribute => $value) {
+                if (in_array($attribute, array('Circuit', 'ResultsList')) == false) {
+                    if ($attribute == 'Time') $attribute = 'StartTime';
+                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                    $values     .= QueryBuilder::build_values_datalist($value);
+                }
+            }
+
+            foreach ($race->Circuit as $circuit) {
+                foreach ($circuit->attributes() as $attribute => $value) {
+                    if (in_array($attribute, array('url')) == false) {
+                        $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                        $values     .= QueryBuilder::build_values_datalist($value);
+                    }
+                }
+            }
+            $head_attributes = $attributes;
+            $head_values = $values;
+
+            $attributes = '';
+            $values = '';
+
+            foreach ($race->ResultsList->Result as $result) {
+                foreach ($result->attributes() as $attribute => $value) {
+                    if (in_array($attribute, array('ResultsList')) == false) {
+                        $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                        $values     .= QueryBuilder::build_values_datalist($value);
+                    }
+                }
+
+                foreach ($result as $attribute => $value) {
+                    if (in_array($attribute, array('ResultsList', 'Driver', 'Circuit', 'Constructor', 'FastestLap')) == false) {
+                        if ($attribute == 'Time') $attribute = 'RaceTime';
+                        $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                        $values     .= QueryBuilder::build_values_datalist($value);
+                    }
+                }
+
+                foreach ($result->Driver as $driver) {
+                    foreach ($driver->attributes() as $attribute => $value) {
+                        if (in_array($attribute, array('url')) == false) {
+                            $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                            $values     .= QueryBuilder::build_values_datalist($value);
+                        }
+                    }
+                }
+
+                foreach ($result->Constructor as $constructor) {
+                    foreach ($constructor->attributes() as $attribute => $value) {
+                        if (in_array($attribute, array('url')) == false) {
+                            $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                            $values     .= QueryBuilder::build_values_datalist($value);
+                        }
+                    }
+                }
+
+                foreach ($result->FastestLap as $fastestLap) {
+                    foreach ($fastestLap->attributes() as $attribute => $value) {
+                        $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                        $values     .= QueryBuilder::build_values_datalist($value);
+                    }
+                    foreach ($fastestLap as $attribute => $value) {
+                        if ($attribute == 'Time') $attribute = 'FastestTime';
+                        $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                        $values     .= QueryBuilder::build_values_datalist($value);
+                    }
+                }
+                $query = 'INSERT into result (' . substr($head_attributes . ' ' . $attributes, 0, -2) . ') VALUES (' . substr($head_values . ' ' . $values, 0, -2) . ');';
                 $attributes = '';
                 $values = '';
 
-                foreach ($circuits->attributes() as $attribute => $value) {
-                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
-                    $values     .= QueryBuilder::build_values_datalist($value);
-                }
-
-                foreach ($circuit->attributes() as $attribute => $value) {
-                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
-                    $values     .= QueryBuilder::build_values_datalist($value);
-                }
-
-                foreach ($circuit as $attribute => $value) {
-                    if ($attribute != 'Location') {
-                        $attributes .= QueryBuilder::build_attributes_datalist($attribute);
-                        $values     .= QueryBuilder::build_values_datalist($value);
-                    }
-                }
-
-                foreach ($circuit->Location as $location) {
-                    foreach ($location->attributes() as $attribute => $value) {
-                        $attributes .= QueryBuilder::build_attributes_datalist($attribute);
-                        $values     .= QueryBuilder::build_values_datalist($value);
-                    }
-
-                    foreach ($location as $attribute => $value) {
-                        $attributes .= QueryBuilder::build_attributes_datalist($attribute);
-                        $values     .= QueryBuilder::build_values_datalist($value);
-                    }
-                    break 1;
-                }
-                $query = 'INSERT into circuit (' . substr($attributes, 0, -2) . ') VALUES (' . substr($values, 0, -2) . ');';
                 $this->logger->log($query, false);
-
                 $this->db->execute_query($query);
             }
+            exit;
         }
     }
 }
