@@ -1,16 +1,21 @@
 <?php
 
-use App\Controllers\CircuitController;
 use App\Controllers\DriverController;
+use App\Controllers\ResultController;
+use App\Controllers\CircuitController;
 use App\Controllers\ConstructorController;
 
 include 'vendor/autoload.php';
 
 require_once('libraries/autoload.php');
 
-$circuit = new CircuitController;
+$result = new ResultController;
 
-$circuit->import();
+$result->import();
+
+// $circuit = new CircuitController;
+
+// $circuit->import();
 
 // $driver = new DriverController;
 
