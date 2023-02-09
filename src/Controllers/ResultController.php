@@ -9,6 +9,8 @@ use App\Utils\Curl\CurlController;
 
 class ResultController
 {
+    const MAX_ROUND = 50;
+
     protected $db;
     protected $logger;
 
@@ -20,20 +22,27 @@ class ResultController
 
     public function import($minSeason = 1950, $maxSeason = 2022)
     {
+        $round = 1;
         $currentSeason = $maxSeason;
         while ($currentSeason >= $minSeason) {
 
-            $url = "http://ergast.com/api/f1/2022/1/results";
+            while ($round <= self::MAX_ROUND) {
 
-            $xml = CurlController::extract_xml($url);
+                $url = "http://ergast.com/api/f1/" . $currentSeason . "/" . $round . "/results";
 
-            // dd($xml);
+                $xml = CurlController::extract_xml($url);
 
-            if ($currentSeason == $maxSeason) $this->create_table($xml, 'result');
+                // dd($xml);
 
-            $this->insert_data($xml);
+                if (($currentSeason == $maxSeason) and ($round == 1)) $this->create_table($xml, 'result');
+
+                $this->insert_data($xml);
+
+                $round++;
+            }
 
             $currentSeason--;
+            $round = 1;
         }
     }
 
@@ -193,10 +202,11 @@ class ResultController
                 $attributes = '';
                 $values = '';
 
+                dump($query);
+
                 $this->logger->log($query, false);
                 $this->db->execute_query($query);
             }
-            exit;
         }
     }
 }
