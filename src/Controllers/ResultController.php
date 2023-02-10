@@ -9,7 +9,7 @@ use App\Utils\Curl\CurlController;
 
 class ResultController
 {
-    const MAX_ROUND = 50;
+    const MAX_ROUND = 22;
 
     protected $db;
     protected $logger;
