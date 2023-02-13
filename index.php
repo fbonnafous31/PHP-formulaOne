@@ -14,13 +14,13 @@ require_once('libraries/autoload.php');
 
 // $result->import();
 
-// $circuit = new CircuitController;
+$circuit = new CircuitController;
 
-// $circuit->import();
+$circuit->import(2022);
 
-$driver = new DriverController;
+// $driver = new DriverController;
 
-$driver->import(2022);
+// $driver->import(2022);
 
 // echo $driver->show(2020, 2022);
 
