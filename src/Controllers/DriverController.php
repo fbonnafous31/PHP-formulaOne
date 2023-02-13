@@ -3,13 +3,10 @@
 namespace App\Controllers;
 
 use App\Extractor\DriverExtractor;
-use App\Extractor\ExtractorInterface;
 use App\Utils\Logger\Logger;
 use App\Utils\Curl\CurlController;
 use App\Utils\Database\GetDatabase;
 use App\Repository\DriverRepository;
-use App\Utils\Controller\QueryBuilder;
-use App\Utils\Controller\TableCreator;
 
 class DriverController
 {
