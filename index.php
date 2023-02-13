@@ -14,9 +14,9 @@ require_once('libraries/autoload.php');
 
 // $result->import();
 
-$circuit = new CircuitController;
+// $circuit = new CircuitController;
 
-$circuit->import(2022);
+// $circuit->import(2022);
 
 // $driver = new DriverController;
 
@@ -24,6 +24,6 @@ $circuit->import(2022);
 
 // echo $driver->show(2020, 2022);
 
-// $constructor = new ConstructorController;
+$constructor = new ConstructorController;
 
-// $constructor->import();
+$constructor->import(2022);
