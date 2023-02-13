@@ -3,26 +3,21 @@
 namespace App\Controllers;
 
 use App\Extractor\DriverExtractor;
-use App\Utils\Logger\Logger;
+use App\Extractor\QueryExtractor;
 use App\Utils\Curl\CurlController;
-use App\Utils\Database\GetDatabase;
 use App\Repository\DriverRepository;
 
 class DriverController
 {
     const TABLE_NAME = 'Driver';
 
-    protected $db;
-    protected $logger;
     protected $query;
     protected $extractor;
 
     public function __construct()
     {
-        $this->db        = GetDatabase::getDatabase();
-        $this->logger    = new Logger;
-        $this->query     = new DriverRepository;
-        $this->extractor = new DriverExtractor;
+        $this->query      = new DriverRepository;
+        $this->extractor  = new QueryExtractor(new DriverExtractor);
     }
 
     public function import($minSeason = 1950, $maxSeason = 2022)
@@ -35,20 +30,9 @@ class DriverController
             $xml = CurlController::extract_xml($url);
 
             if ($currentSeason == $maxSeason) {
-                $query = $this->extractor->drop_table(self::TABLE_NAME);
-                $this->logger->log($query, false);
-                $this->db->execute_query($query);
-
-                $query = $this->extractor->create_table($xml, self::TABLE_NAME);
-                $this->logger->log($query, false);
-                $this->db->execute_query($query);
+                $this->extractor->buildTable($xml, self::TABLE_NAME);
             }
-
-            $queries = $this->extractor->insert($xml, self::TABLE_NAME);
-            foreach ($queries as $query) {
-                $this->db->execute_query($query);
-                $this->logger->log($query, false);
-            }
+            $this->extractor->buildQuery($xml, self::TABLE_NAME);
 
             $currentSeason--;
         }

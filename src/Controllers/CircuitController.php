@@ -2,24 +2,19 @@
 
 namespace App\Controllers;
 
-use App\Utils\Logger\Logger;
 use App\Utils\Curl\CurlController;
 use App\Extractor\CircuitExtractor;
-use App\Utils\Database\GetDatabase;
+use App\Extractor\QueryExtractor;
 
 class CircuitController
 {
     const TABLE_NAME = 'Circuit';
 
-    protected $db;
-    protected $logger;
     protected $extractor;
 
     public function __construct()
     {
-        $this->db        = GetDatabase::getDatabase();
-        $this->logger    = new Logger;
-        $this->extractor = new CircuitExtractor;
+        $this->extractor = new QueryExtractor(new CircuitExtractor);
     }
 
     public function import($minSeason = 1950, $maxSeason = 2022)
@@ -31,20 +26,9 @@ class CircuitController
 
             $xml = CurlController::extract_xml($url);
             if ($currentSeason == $maxSeason) {
-                $query = $this->extractor->drop_table(self::TABLE_NAME);
-                $this->logger->log($query, false);
-                $this->db->execute_query($query);
-
-                $query = $this->extractor->create_table($xml, self::TABLE_NAME);
-                $this->logger->log($query, false);
-                $this->db->execute_query($query);
+                $this->extractor->buildTable($xml, self::TABLE_NAME);
             }
-
-            $queries = $this->extractor->insert($xml, self::TABLE_NAME);
-            foreach ($queries as $query) {
-                $this->db->execute_query($query);
-                $this->logger->log($query, false);
-            }
+            $this->extractor->buildQuery($xml, self::TABLE_NAME);
 
             $currentSeason--;
         }
