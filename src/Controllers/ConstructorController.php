@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Extractor\ConstructorExtractor;
 use App\Utils\Logger\Logger;
 use App\Utils\Database\GetDatabase;
-use App\Utils\Controller\QueryBuilder;
 use App\Utils\Curl\CurlController;
 
 class ConstructorController

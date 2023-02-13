@@ -10,9 +10,9 @@ include 'vendor/autoload.php';
 
 require_once('libraries/autoload.php');
 
-// $result = new ResultController;
+$result = new ResultController;
 
-// $result->import();
+$result->import(2022);
 
 // $circuit = new CircuitController;
 
@@ -24,6 +24,6 @@ require_once('libraries/autoload.php');
 
 // echo $driver->show(2020, 2022);
 
-$constructor = new ConstructorController;
+// $constructor = new ConstructorController;
 
-$constructor->import(2022);
+// $constructor->import(2022);
