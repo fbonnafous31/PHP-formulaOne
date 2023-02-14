@@ -1,5 +1,6 @@
 <?php
 
+use App\Utils\Router\Router;
 use App\Controllers\DriverController;
 use App\Controllers\ResultController;
 use App\Extractor\ExtractorInterface;
@@ -10,9 +11,11 @@ include 'vendor/autoload.php';
 
 require_once('libraries/autoload.php');
 
-$result = new ResultController;
+Router::buildRoutes();
 
-$result->import(2022);
+// $result = new ResultController;
+
+// $result->import(2022);
 
 // $circuit = new CircuitController;
 

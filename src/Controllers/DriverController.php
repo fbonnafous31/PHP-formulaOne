@@ -46,7 +46,7 @@ class DriverController
 
         $drivers_list = $this->query->list_drivers($minSeason, $maxSeason);
 
-        return $twig->render('driver/list.html.twig', [
+        return $twig->render('/driver/list.html.twig', [
             'drivers' => $drivers_list
         ]);
     }
