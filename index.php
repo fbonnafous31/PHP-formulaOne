@@ -6,12 +6,17 @@ use App\Controllers\ResultController;
 use App\Extractor\ExtractorInterface;
 use App\Controllers\CircuitController;
 use App\Controllers\ConstructorController;
+use App\Controllers\QualifyingController;
 
 include 'vendor/autoload.php';
 
 require_once('libraries/autoload.php');
 
 Router::buildRoutes();
+
+// $qualifying = new QualifyingController;
+
+// $qualifying->import();
 
 // $result = new ResultController;
 
