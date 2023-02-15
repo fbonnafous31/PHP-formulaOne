@@ -7,12 +7,17 @@ use App\Extractor\ExtractorInterface;
 use App\Controllers\CircuitController;
 use App\Controllers\ConstructorController;
 use App\Controllers\QualifyingController;
+use App\Controllers\ScheduleController;
 
 include 'vendor/autoload.php';
 
 require_once('libraries/autoload.php');
 
-Router::buildRoutes();
+// Router::buildRoutes();
+
+$schedule = new ScheduleController;
+
+$schedule->import(2021);
 
 // $qualifying = new QualifyingController;
 
