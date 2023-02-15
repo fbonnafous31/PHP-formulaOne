@@ -17,7 +17,7 @@ require_once('libraries/autoload.php');
 
 $schedule = new ScheduleController;
 
-$schedule->import(2021);
+$schedule->import();
 
 // $qualifying = new QualifyingController;
 

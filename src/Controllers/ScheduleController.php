@@ -26,8 +26,6 @@ class ScheduleController
 
             $xml = CurlController::extract_xml($url);
 
-            dump($xml);
-            dump(self::class);
             if ($currentSeason == $maxSeason) {
                 $this->extractor->buildTable($xml, self::TABLE_NAME);
             }
