@@ -10,6 +10,7 @@ use App\Controllers\QualifyingController;
 use App\Controllers\ConstructorController;
 use App\Controllers\DriverStandingController;
 use App\Controllers\ConstructorStandingController;
+use App\Controllers\FinishingStatusController;
 
 include 'vendor/autoload.php';
 
@@ -17,9 +18,13 @@ require_once('libraries/autoload.php');
 
 // Router::buildRoutes();
 
-$constructorStanding = new ConstructorStandingController;
+// $constructorStanding = new ConstructorStandingController;
 
-$constructorStanding->import();
+// $constructorStanding->import();
+
+$finishingStatus = new FinishingStatusController;
+
+$finishingStatus->import();
 
 // $driverStanding = new DriverStandingController;
 
