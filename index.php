@@ -5,9 +5,11 @@ use App\Controllers\DriverController;
 use App\Controllers\ResultController;
 use App\Extractor\ExtractorInterface;
 use App\Controllers\CircuitController;
-use App\Controllers\ConstructorController;
-use App\Controllers\QualifyingController;
 use App\Controllers\ScheduleController;
+use App\Controllers\QualifyingController;
+use App\Controllers\ConstructorController;
+use App\Controllers\DriverStandingController;
+use App\Controllers\ConstructorStandingController;
 
 include 'vendor/autoload.php';
 
@@ -15,9 +17,17 @@ require_once('libraries/autoload.php');
 
 // Router::buildRoutes();
 
-$schedule = new ScheduleController;
+$constructorStanding = new ConstructorStandingController;
 
-$schedule->import();
+$constructorStanding->import();
+
+// $driverStanding = new DriverStandingController;
+
+// $driverStanding->import();
+
+// $schedule = new ScheduleController;
+
+// $schedule->import();
 
 // $qualifying = new QualifyingController;
 
