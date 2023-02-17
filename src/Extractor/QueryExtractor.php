@@ -34,8 +34,8 @@ class QueryExtractor
     {
         $queries = $this->extractor->insert($xml, $tableName);
         foreach ($queries as $query) {
-            $this->db->execute_query($query);
             $this->logger->log($query, false);
+            $this->db->execute_query($query);
         }
     }
 }

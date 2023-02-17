@@ -9,8 +9,8 @@ use App\Controllers\ScheduleController;
 use App\Controllers\QualifyingController;
 use App\Controllers\ConstructorController;
 use App\Controllers\DriverStandingController;
-use App\Controllers\ConstructorStandingController;
 use App\Controllers\FinishingStatusController;
+use App\Controllers\ConstructorStandingController;
 
 include 'vendor/autoload.php';
 
@@ -22,9 +22,9 @@ require_once('libraries/autoload.php');
 
 // $constructorStanding->import();
 
-$finishingStatus = new FinishingStatusController;
+// $finishingStatus = new FinishingStatusController;
 
-$finishingStatus->import();
+// $finishingStatus->import();
 
 // $driverStanding = new DriverStandingController;
 

@@ -8,6 +8,7 @@ use App\Extractor\FinishingStatusExtractor;
 
 class FinishingStatusController
 {
+    const MAX_ROUND  = 22;
     const TABLE_NAME = 'FinishingStatus';
 
     protected $extractor;
@@ -23,16 +24,18 @@ class FinishingStatusController
         $currentSeason = $maxSeason;
         while ($currentSeason >= $minSeason) {
 
-            $url = "http://ergast.com/api/f1/" . $currentSeason . "/status";
+            while ($round <= self::MAX_ROUND) {
 
-            $xml = CurlController::extract_xml($url);
+                $url = "http://ergast.com/api/f1/" . $currentSeason . "/" . $round . "/status";
 
-            dump($xml);
+                $xml = CurlController::extract_xml($url);
 
-            if (($currentSeason == $maxSeason) and ($round == 1)) {
-                $this->extractor->buildTable($xml, self::TABLE_NAME);
+                if (($currentSeason == $maxSeason) and ($round == 1)) {
+                    $this->extractor->buildTable($xml, self::TABLE_NAME);
+                }
+                $this->extractor->buildQuery($xml, self::TABLE_NAME);
+                $round++;
             }
-            $this->extractor->buildQuery($xml, self::TABLE_NAME);
 
             $currentSeason--;
             $round = 1;

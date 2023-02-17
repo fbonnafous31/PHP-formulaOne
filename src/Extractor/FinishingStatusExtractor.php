@@ -10,17 +10,26 @@ class FinishingStatusExtractor implements ExtractorInterface
     {
         $attributes = '';
         $query  = 'CREATE TABLE ' . $tableName . ' (';
-
         foreach ($xml->StatusTable as $status) {
+
             foreach ($status->attributes() as $attribute => $value) {
                 $attributes .= QueryBuilder::build_attributes_columnlist($attribute);
             }
-        }
-        $attributes .= QueryBuilder::build_attributes_columnlist('status');
 
+            foreach ($status->Status as $attribute) {
+                $attributes .= QueryBuilder::build_attributes_columnlist($attribute->getName());
+
+                foreach ($attribute->attributes() as $attribute => $value) {
+                    $attributes .= QueryBuilder::build_attributes_columnlist($attribute);
+                }
+                break;
+            }
+            break;
+        }
 
         $query .= $attributes;
         $query = substr($query, 0, -2) .  ');';
+
         return $query;
     }
 
@@ -32,22 +41,29 @@ class FinishingStatusExtractor implements ExtractorInterface
     public function insert($xml, string $tableName): array
     {
         $queries = [];
-
         foreach ($xml->StatusTable as $status) {
             $attributes = '';
             $values = '';
 
-            foreach ($status as $attribute => $value) {
-                foreach ($status->attributes() as $attr => $val) {
-                    $attributes .= QueryBuilder::build_attributes_datalist($attr);
-                    $values     .= QueryBuilder::build_values_datalist($val);
-                }
-
+            foreach ($status->attributes() as $attribute => $value) {
                 $attributes .= QueryBuilder::build_attributes_datalist($attribute);
                 $values     .= QueryBuilder::build_values_datalist($value);
+            }
+            $head_attributes = $attributes;
+            $head_values = $values;
 
-                $queries[] = 'INSERT into ' . $tableName . '(' . substr($attributes, 0, -2) . ') VALUES (' . substr($values, 0, -2) . ');';
+            $attributes = '';
+            $values = '';
 
+            foreach ($status->Status as $attribute) {
+                $attributes .= QueryBuilder::build_attributes_datalist($attribute->getName());
+                $values     .= QueryBuilder::build_values_datalist($attribute->__toString());
+
+                foreach ($attribute->attributes() as $attribute => $value) {
+                    $attributes .= QueryBuilder::build_attributes_datalist($attribute);
+                    $values     .= QueryBuilder::build_values_datalist($value);
+                }
+                $queries[] = 'INSERT into ' . $tableName . '(' . substr($head_attributes . ' ' . $attributes, 0, -2) . ') VALUES (' . substr($head_values . ' ' . $values, 0, -2) . ');';
                 $attributes = '';
                 $values = '';
             }
