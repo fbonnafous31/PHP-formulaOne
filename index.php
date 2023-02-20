@@ -11,12 +11,16 @@ use App\Controllers\ConstructorController;
 use App\Controllers\DriverStandingController;
 use App\Controllers\FinishingStatusController;
 use App\Controllers\ConstructorStandingController;
+use App\Controllers\PitStopController;
 
 include 'vendor/autoload.php';
 
 require_once('libraries/autoload.php');
 
 // Router::buildRoutes();
+
+$pitStop = new PitStopController;
+$pitStop->import();
 
 // $constructorStanding = new ConstructorStandingController;
 
