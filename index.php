@@ -12,6 +12,8 @@ use App\Controllers\DriverStandingController;
 use App\Controllers\FinishingStatusController;
 use App\Controllers\ConstructorStandingController;
 use App\Controllers\PitStopController;
+use App\Extractor\DriverExtractor;
+use App\Importer\Importer;
 
 include 'vendor/autoload.php';
 
@@ -19,8 +21,9 @@ require_once('libraries/autoload.php');
 
 // Router::buildRoutes();
 
-$pitStop = new PitStopController;
-$pitStop->import();
+// $pitStop = new PitStopController;
+
+// $pitStop->import();
 
 // $constructorStanding = new ConstructorStandingController;
 
@@ -50,9 +53,9 @@ $pitStop->import();
 
 // $circuit->import(2022);
 
-// $driver = new DriverController;
+$driver = new Importer(new DriverExtractor, 'Drivers');
 
-// $driver->import(2022);
+$driver->importBySeason(2021, 2021);
 
 // echo $driver->show(2020, 2022);
 
