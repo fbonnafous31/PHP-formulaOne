@@ -2,14 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Extractor\DriverExtractor;
 use App\Repository\DriverRepository;
 
 class DriverController
 {
     protected $query;
 
-    public function __construct(DriverExtractor $extractor)
+    public function __construct()
     {
         $this->query    = new DriverRepository;
     }

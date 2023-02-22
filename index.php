@@ -1,64 +1,33 @@
 <?php
 
-use App\Utils\Router\Router;
-use App\Controllers\DriverController;
-use App\Controllers\ResultController;
-use App\Extractor\ExtractorInterface;
-use App\Controllers\CircuitController;
-use App\Controllers\ScheduleController;
-use App\Controllers\QualifyingController;
-use App\Controllers\ConstructorController;
-use App\Controllers\DriverStandingController;
-use App\Controllers\FinishingStatusController;
-use App\Controllers\ConstructorStandingController;
-use App\Controllers\PitStopController;
-use App\Extractor\DriverExtractor;
 use App\Importer\Importer;
+use App\Utils\Router\Router;
+use App\Extractor\DriverExtractor;
+use App\Extractor\ResultExtractor;
+use App\Extractor\CircuitExtractor;
+use App\Extractor\PitStopExtractor;
+use App\Extractor\ScheduleExtractor;
+use App\Extractor\QualifyingExtractor;
+use App\Extractor\ConstructorExtractor;
+use App\Extractor\DriverStandingExtractor;
+use App\Extractor\FinishingStatusExtractor;
+use App\Extractor\ConstructorStandingExtractor;
 
 include 'vendor/autoload.php';
 
 require_once('libraries/autoload.php');
 
-// Router::buildRoutes();
+Router::buildRoutes();
 
-// $pitStop = new PitStopController;
+$importer = new Importer();
 
-// $pitStop->import();
-
-// $constructorStanding = new ConstructorStandingController;
-
-// $constructorStanding->import();
-
-// $finishingStatus = new FinishingStatusController;
-
-// $finishingStatus->import();
-
-// $driverStanding = new DriverStandingController;
-
-// $driverStanding->import();
-
-// $schedule = new ScheduleController;
-
-// $schedule->import();
-
-// $qualifying = new QualifyingController;
-
-// $qualifying->import();
-
-// $result = new ResultController;
-
-// $result->import(2022);
-
-// $circuit = new CircuitController;
-
-// $circuit->import(2022);
-
-$driver = new Importer(new DriverExtractor, 'Drivers');
-
-$driver->importBySeason(2021, 2021);
-
-// echo $driver->show(2020, 2022);
-
-// $constructor = new ConstructorController;
-
-// $constructor->import(2022);
+$importer->importBySeason(new DriverExtractor, 'Drivers', 2022);
+$importer->importBySeason(new ConstructorExtractor,  'Constructors', 2022);
+$importer->importBySeason(new CircuitExtractor, 'Circuits', 2022);
+$importer->importBySeason(new ScheduleExtractor, 'Schedules', 2022);
+$importer->importByRound(new ResultExtractor, 'Results', 2022);
+$importer->importByRound(new QualifyingExtractor, 'Qualifying', 2022);
+$importer->importByRound(new DriverStandingExtractor, 'DriverStandings', 2022);
+$importer->importByRound(new ConstructorStandingExtractor, 'ConstructorStandings', 2022);
+$importer->importByRound(new FinishingStatusExtractor, 'Status', 2022);
+$importer->importByStop(new PitStopExtractor, 'PitStops', 2022);
