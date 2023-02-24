@@ -21,13 +21,13 @@ Router::buildRoutes();
 
 $importer = new Importer();
 
-$importer->importBySeason(new DriverExtractor, 'Drivers', 2022);
-$importer->importBySeason(new ConstructorExtractor,  'Constructors', 2022);
-$importer->importBySeason(new CircuitExtractor, 'Circuits', 2022);
-$importer->importBySeason(new ScheduleExtractor, 'Schedules', 2022);
-$importer->importByRound(new ResultExtractor, 'Results', 2022);
-$importer->importByRound(new QualifyingExtractor, 'Qualifying', 2022);
-$importer->importByRound(new DriverStandingExtractor, 'DriverStandings', 2022);
-$importer->importByRound(new ConstructorStandingExtractor, 'ConstructorStandings', 2022);
-$importer->importByRound(new FinishingStatusExtractor, 'Status', 2022);
-$importer->importByStop(new PitStopExtractor, 'PitStops', 2022);
+$importer->importBySeason(new DriverExtractor, 'Drivers');
+$importer->importBySeason(new ConstructorExtractor,  'Constructors');
+$importer->importBySeason(new CircuitExtractor, 'Circuits');
+$importer->importBySeason(new ScheduleExtractor, 'Schedules');
+$importer->importByRound(new ResultExtractor, 'Results');
+$importer->importByRound(new QualifyingExtractor, 'Qualifying');
+$importer->importByRound(new DriverStandingExtractor, 'DriverStandings');
+$importer->importByRound(new ConstructorStandingExtractor, 'ConstructorStandings');
+$importer->importByRound(new FinishingStatusExtractor, 'Status');
+$importer->importByStop(new PitStopExtractor, 'PitStops');
