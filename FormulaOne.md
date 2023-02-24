@@ -30,7 +30,7 @@ Les principes sont très clairement expliqués dans l’article de blog d’Alex
 
 Et si on pouvait les résumer en un petit schéma très simple, voilà ce que cela raconte.
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.001.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.001.png)
 
 
 
@@ -56,11 +56,11 @@ Le site référence l’ensemble des informations relatives aux pilotes, constru
 
 Les données sont accessibles via cURL.
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.003.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.003.png)
 
 Ce qui permet de récupérer les données au format XML
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.004.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.004.png)
 
 
 
@@ -68,7 +68,7 @@ Il ne reste plus qu’à écrire un petit programme qui va venir récupérer les
 
 Pour cela je partirai d’un projet vide, auquel j’ajouterai deux briques déjà existantes : le var-dumper de Symfony qui permet de visualiser des données de manière plus structurées (c’est plutôt cool, voir indispensable pour visualiser des objets complexes comme les objets XML) et le composant Twig pour les restitutions (je trouve la syntaxe du langage agréable).
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.005.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.005.png)
 
 Avant de commencer la partie extraction des données, je vais créer quelques outils pour la gestion de la base de données, des logs, de la récupération du fichier XML, un router (que j’ai piqué du cours Udemy à Lior, surtout pour comprendre le fonctionnement du Routing en dehors de Symfony, même si la brique n’est pas indispensable pour débuter le projet).
 
@@ -76,7 +76,7 @@ Ensuite je vais ajouter deux dossiers qui vont permettre de traiter le cœur du 
 
 En fonction des données mises à disposition, je peux les récupérer à un niveau saison, course ou tour.
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.006.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.006.png)
 
 
 
@@ -86,24 +86,24 @@ La structure des fichiers mis à disposition pouvant différer d’une catégori
 
 Je vais pouvoir définir une interface qui sera implémentée par les extracteurs et qui demandera à chaque classe qui l’implémente de définir une fonction qui crée la table de base de données, une fonction qui supprime cette table, et une fonction qui extrait les requêtes alimentant la base de données. 
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.007.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.007.png)
 
 Au niveau de l’import je vais créer trois fonctions pour les trois possibilités d’import (par saison, course et tour).
 
 Import qui prendra en entrée un extracteur. 
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.008.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.008.png)
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.009.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.009.png)
 
 
 L’extracteur a deux fonctions, créer la nouvelle table et l’alimenter dans la base de données et éventuellement laisser des logs (utiles dans le cadre d’une backup du traitement et dans le cadre du debug pour comprendre l’origine d’une erreur en base de données).
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.010.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.010.png)
 
 Pour créer la base de données il ne reste plus qu’à appeler l’import de chaque catégorie. 
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.011.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.011.png)
 
 
 
@@ -111,11 +111,11 @@ Pour créer la base de données il ne reste plus qu’à appeler l’import de c
 
 Une fois exécuté, les logs sont créés.
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.012.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.012.png)
 
 Et la base de données alimentée avec tout l’ historique de données formule 1 depuis 1950.
 
-![](Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.013.png)
+![](public/images/md/Aspose.Words.a855073b-f5ca-4f7c-a751-476987888dca.013.png)
 
 
 Ne restera plus qu’à proposer de l’affichage de ces données, éventuellement envisager de les croiser pour trouver des statistiques pertinentes :D 
